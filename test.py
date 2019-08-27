@@ -1,6 +1,5 @@
 import numpy as np
-#from gapy2.gapy import GA
-from gapy3.gapy import GA
+from gapy import GA
 import os
 import matplotlib.pyplot as plt
 import time
