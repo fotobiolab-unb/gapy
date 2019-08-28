@@ -24,7 +24,7 @@ The file `test.py` presents an example on how to use this algorithm. It requires
 
 Probabilities for crossover or mutation are numbers in the interval [0,1] and set by the parameters `crossover` and `mutation` respectively. They both default to 0.5.
 
-The output range of each parameter used to make up the individual can be scaled separately by passing a numpy array containing the upper and lower bounds in the shape (k,2), where k is the number of parameters (`chromosome_size`) and setting `has_mask` to True.
+The output range of each parameter used to make up the individual can be scaled separately by passing a numpy array containing the upper and lower bounds in the shape (k,2), where k is the number of parameters (`chromosome_size`), and also setting `has_mask` to True.
 
 The number of bits for each parameter can also be set as an integer in `resolution`.
 
