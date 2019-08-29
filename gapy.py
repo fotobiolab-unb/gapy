@@ -24,7 +24,8 @@ class GA(object):
     range_mask=None,
     has_mask=False,
     logging=True,
-    time_print=.1
+    time_print=.1,
+    maximize = True
     ):
         self.bits = resolution
         self.m = population_size
@@ -47,12 +48,19 @@ class GA(object):
         self.R = np.array([0])
         self.time_print=time_print
         self.ftime = 0
+        self.maximize = maximize
 
-    def sorted_G(self):
+    def sorted(self):
         """
         Sorts the population with respect to the fitness in ascending order
         """
-        self.G = self.G[self.F.argsort()[::-1]]
+        if self.maximize:
+            self.G = self.G[self.F.argsort()[::-1]]
+            self.F.sort()
+            self.F = self.F[::-1]
+        else:
+            self.G = self.G[self.F.argsort()]
+            self.F.sort()
 
     def crossover_func(self):
         """
@@ -64,12 +72,15 @@ class GA(object):
         if self.elite:
             upper_bound = 1 + (1-self.m&1)
             self.G[-1] = self.G[0].copy()
+            self.F[-1] = self.F[0].copy()
         k = np.random.randint(0,self.bits)
         mask = 2**k-1
         p = self.F[upper_bound:].copy()
         #p = 1. + p/np.max(np.abs(p))
         p = expit(p)
         p[np.isnan(p)]=0
+        if not self.maximize:
+            p = 1.0-p
         if p.sum()==0:
             p = np.ones(p.shape)/p.shape[0]
         else:
@@ -127,9 +138,7 @@ class GA(object):
         self.F = np.array(self.f(self.R)) #Scale and modify to matrix shape
         tb = time.time()
         self.ftime = tb-ta
-        self.sorted_G()
-        self.F.sort()
-        self.F = self.F[::-1]
+        self.sorted()
 
     def write(self,i):
         os.system("clear")
@@ -149,5 +158,5 @@ class GA(object):
                 t = time.time()
             self.crossover_func()
             self.mutation_func()
-        self.sorted_G()
+        self.sorted()
         return self.G
