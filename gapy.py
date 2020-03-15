@@ -85,13 +85,19 @@ class GA(object):
             p = np.ones(p.shape)/p.shape[0]
         else:
             p = p/p.sum() #probability array for the tournament
-        indices = np.random.choice(np.arange(upper_bound,self.m),size=((self.m-upper_bound)//2,2),p=p)
+        L = self.m-upper_bound
+        rng_size = (L//2,2)
+        rng = np.arange(upper_bound,self.m)
+        #rng = list(range(upper_bound,self.m))
+        #indices = np.random.choice(rng,size=rng_size,p=p, replace=False)
+        indices = random.choices(range(self.m-upper_bound), weights=list(p), k=self.m-upper_bound)
+        indices = np.array(indices).reshape(rng_size)
         #print("indices: ", indices, "mask: ", mask)
         #
         # M=np.hstack([self.G[indices]&mask,self.G[indices]&~mask]).reshape((self.m-upper_bound)//2,2,2*self.n)
         # U=M[:,0]|M[:,1][:,::-1]
         #self.G[upper_bound:]=U.reshape((self.m-upper_bound,self.n))
-
+        # print("2",self.G.shape)
         U = self.G[indices]&mask
         V  = self.G[indices]&~mask
         self.G[upper_bound:] = np.vstack([U[:,0]|V[:,1],U[:,1]|V[:,0]])
@@ -138,7 +144,9 @@ class GA(object):
         self.F = np.array(self.f(self.R)) #Scale and modify to matrix shape
         tb = time.time()
         self.ftime = tb-ta
+        # print("0", self.G.shape, "F", self.F.shape)
         self.sorted()
+        # print("1", self.G.shape)
 
     def write(self,i):
         os.system("clear")

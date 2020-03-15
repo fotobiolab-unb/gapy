@@ -28,13 +28,14 @@ for f,l in zip(functions,names):
             population_size=8,
             chromosome_size=4,
             resolution=8,
-            iterations=10000,
+            iterations=100,
             elitism=True,
             mutation=0.2,
             fitness=f,
             range_mask=mask,
             has_mask=True,
-            time_print=.5
+            time_print=.5,
+            logging=True
             )
     ga.G[0]=np.zeros(ga.G[0].shape)
     ga.run()
