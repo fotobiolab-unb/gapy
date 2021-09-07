@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.special import expit
+from scipy.special import softmax
 
 """
 Genetic Algorithm for optimization. Uses arrays of binary numbers to store genetic code. Uses elitism.
@@ -84,15 +84,7 @@ class GA:
         parameters = self.view(self.G,self.linmap)
         #Ask Oracle
         self.fitness = np.array(self.f(parameters)) #Used for crossover. Assumes it is a list or 1d array
-        e = expit(self.fitness) #Normalizing between 0 to 1
-        self.p = e/e.sum()
-        error = 1.0 - self.p.sum() #Truncation error
-        #Ennsuring that the sum will be one without truncation errors
-        if error > 0:
-            self.p[0] = self.p[0] + error
-        else:
-            j = np.argwhere((1-error>=self.p)&(self.p>-error))[0][0]
-            self.p[j] = self.p[j] + error
+        self.p = softmax(self.fitness)
 
         
     def crossover(self):
