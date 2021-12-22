@@ -20,7 +20,9 @@ Pandas is only used for aesthetic reasons on the `write` method for the printing
 
 ### Instalation
 
-A testing version is available in 
+A testing version is available in PyPI:
+
+`pip3 install genapy`
 
 ### How to use
 
