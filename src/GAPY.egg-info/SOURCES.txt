@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/GAPY.egg-info/PKG-INFO
+src/GAPY.egg-info/SOURCES.txt
+src/GAPY.egg-info/dependency_links.txt
+src/GAPY.egg-info/top_level.txt
+src/gapy/__init__.py
+src/gapy/gapy.py
+src/gapy/gapy2.py
+src/gapy/tools.py
