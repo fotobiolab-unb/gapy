@@ -20,10 +20,10 @@ class GA:
         self,
         population_size,
         mutation_probability,
-        generations,
         resolution,
         ranges,
-        elitism
+        elitism,
+        generations = None
     ):
         """
         ranges list of pairs:
