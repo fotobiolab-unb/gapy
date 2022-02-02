@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: genapy
-Version: 0.0.2
+Version: 0.0.3
 Summary: Genetic Algorithm for Python
 Home-page: https://github.com/fotobiolab-unb/gapy
 Author: Icaro Lorran Lopes Costa
@@ -25,7 +25,7 @@ This algorithm is simply a class which can be directly implemented in your proje
 
 ### Required Packages
 
-You will need the following packages to run this algorithm
+You will need the following packages to run this algorithm (also listed in `src/gapy/requirements.txt`)
 
 ```
 numpy
@@ -34,6 +34,12 @@ scipy
 ```
 
 Pandas is only used for aesthetic reasons on the `write` method for the printing and is entirely optional. To remove this feature, simply comment out the method and set logging to False.
+
+### Instalation
+
+A testing version is available in PyPI:
+
+`pip3 install genapy`
 
 ### How to use
 

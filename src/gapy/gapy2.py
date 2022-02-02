@@ -75,6 +75,25 @@ class GA:
         parameters = t*linmap[:,0] + (1-t)*linmap[:,1]
         return parameters
     
+    def view_g(self):
+        return self.view(self.g,self.linmap)
+    
+    def inverse_view(self,x,linmap=None):
+        """
+        Inverse transform of `view`
+        """
+        if linmap is None:
+            linmap = self.linmap
+        a = (2**self.r - 1)
+        y = a*(x-linmap[:,1])/(linmap[:,0]-linmap[:,1])
+        B = []
+        for row in y:
+            u = []
+            for e in row:
+                u+=list(np.binary_repr(e,self.r))
+            B.append(np.array(u).astype(np.uint0))
+        return B
+
     def ask_oracle(self):
         """
         Needs the function to receive the entire matrix and return a list of results equal
