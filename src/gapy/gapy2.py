@@ -76,7 +76,7 @@ class GA:
         return parameters
     
     def view_g(self):
-        return self.view(self.g,self.linmap)
+        return self.view(self.G,self.linmap)
     
     def inverse_view(self,x,linmap=None):
         """
@@ -85,14 +85,14 @@ class GA:
         if linmap is None:
             linmap = self.linmap
         a = (2**self.r - 1)
-        y = a*(x-linmap[:,1])/(linmap[:,0]-linmap[:,1])
+        y = (a*(x-linmap[:,1])/(linmap[:,0]-linmap[:,1])).astype(int)
         B = []
         for row in y:
             u = []
             for e in row:
-                u+=list(np.binary_repr(e,self.r))
+                u+=list(np.binary_repr(e,self.r))[::-1]
             B.append(np.array(u).astype(np.uint0))
-        return B
+        return np.array(B)
 
     def ask_oracle(self):
         """
@@ -131,14 +131,7 @@ class GA:
             elite = self.G[i].copy()
             children[i] = elite
             
-        self.G = children[:self.pop_size,:]
-            
-        
-    """
-    TODO
-    Use crossover probability and self.fitness to perform crossover.
-    """
-    
+        self.G = children[:self.pop_size,:]    
     
     def run(self):
         for i in range(self.generations):
