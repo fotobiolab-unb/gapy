@@ -23,6 +23,7 @@ class GA:
         resolution,
         ranges,
         elitism,
+        do_crossover = True,
         generations = None
     ):
         """
@@ -38,6 +39,8 @@ class GA:
             Size of population.
         elitism bool:
             If True keeps the best individual of the last generation intact.
+        do_crossover bool:
+            Whether or not to perform crossover.
         """
         self.f = None #Function to be maximized
         self.pop_size = population_size
@@ -48,6 +51,7 @@ class GA:
         self.n_param = len(self.linmap)
         self.elitism = elitism + 0
         self.total_bits = self.n_param*self.r
+        self.do_crossover = do_crossover
         self.G = np.random.randint(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
         
     def mutation(self):
@@ -112,7 +116,7 @@ class GA:
         is selected, the fittest individual of the last generation lives on and replaces one of the
         generated individuals.
         """
-        cut = np.random.randint(0,self.total_bits)
+        cut = np.random.randint(0,self.total_bits) if self.do_crossover else 0
         cross_size = self.pop_size//2 + 1
         
         pairs = np.random.choice(range(self.pop_size),p=self.p,size=(cross_size,2))
