@@ -24,7 +24,8 @@ class GA:
         ranges,
         elitism,
         do_crossover = True,
-        generations = None
+        generations = None,
+        rng_seed = 0
     ):
         """
         ranges list of pairs:
@@ -52,12 +53,13 @@ class GA:
         self.elitism = elitism + 0
         self.total_bits = self.n_param*self.r
         self.do_crossover = do_crossover
-        self.G = np.random.randint(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
+        self.rng = np.random.default_rng(rng_seed)
+        self.G = self.rng.randint(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
         
     def mutation(self):
         i = self.elitism
         mutation_distribution = [self.mp, 1-self.mp]
-        mask = np.random.choice([1,0], size=self.G.shape, p=mutation_distribution)#Ones change the bit and zero does not
+        mask = self.rng.choice([1,0], size=self.G.shape, p=mutation_distribution)#Ones change the bit and zero does not
         mutated = self.G^mask
         
         if self.elitism:
@@ -116,10 +118,10 @@ class GA:
         is selected, the fittest individual of the last generation lives on and replaces one of the
         generated individuals.
         """
-        cut = np.random.randint(0,self.total_bits) if self.do_crossover else 0
+        cut = self.rng.randint(0,self.total_bits) if self.do_crossover else 0
         cross_size = self.pop_size//2 + 1
         
-        pairs = np.random.choice(range(self.pop_size),p=self.p,size=(cross_size,2))
+        pairs = self.rng.choice(range(self.pop_size),p=self.p,size=(cross_size,2))
         """
         Example of children generation:
         [[0, 0, 1, 1, 1, 0],[1, 1, 1, 0, 0, 1]]
