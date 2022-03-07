@@ -145,5 +145,5 @@ class GA:
         self.ask_oracle()
         i = self.fitness.argmax()
         self.fittest = np.array([self.G[i]])
-        x = self.view(self.fittest, np.array([self.linmap[i]]))
+        x = self.view(self.fittest, self.linmap)
         return self.G, x
