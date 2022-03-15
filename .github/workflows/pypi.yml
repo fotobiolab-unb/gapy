@@ -1,10 +1,9 @@
 name: PYPI build and publish
-uses: etils-actions/pypi-build-publish@v1
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -27,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install -r ./src/gapy/requirements.txt
 
-      - use: conchylicultor/pypi-build-publish@v1
+      - name: "PYPI"
+        use: conchylicultor/pypi-build-publish@v1
         with:
           pypi-token: ${{ secrets.PYPI_API_TOKEN }}
