@@ -55,6 +55,7 @@ class GA:
         self.do_crossover = do_crossover
         self.rng = np.random.default_rng(rng_seed)
         self.G = self.rng.randint(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
+        self.elite_index = 0
         
     def mutation(self):
         i = self.elitism
@@ -63,11 +64,10 @@ class GA:
         mutated = self.G^mask
         
         if self.elitism:
-            i = self.fitness.argmax()
-            elite = self.G[i].copy()
-            mutated[i] = elite
+            elite = self.G[self.elite_index].copy()
+            mutated[self.elite_index] = elite
         
-        self.G = mutated
+        self.G = mutated.copy()
         
     def view(self,x,linmap):
         """
@@ -136,6 +136,7 @@ class GA:
             i = self.fitness.argmax()
             elite = self.G[i].copy()
             children[i] = elite
+            self.elite_index = i
             
         self.G = children[:self.pop_size,:]    
     
