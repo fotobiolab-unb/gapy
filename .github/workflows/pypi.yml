@@ -27,6 +27,6 @@ jobs:
         run: python3 -m pip install -r ./src/gapy/requirements.txt
 
       - name: "PYPI"
-        use: conchylicultor/pypi-build-publish@v1
+        uses: conchylicultor/pypi-build-publish@v1
         with:
           pypi-token: ${{ secrets.PYPI_API_TOKEN }}
