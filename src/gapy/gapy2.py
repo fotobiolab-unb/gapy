@@ -22,7 +22,6 @@ class GA:
         mutation_probability,
         resolution,
         ranges,
-        elitism,
         do_crossover = True,
         generations = None,
         rng_seed = 0
@@ -38,8 +37,6 @@ class GA:
             Probability of mutation for a single bit.            
         population_size int:
             Size of population.
-        elitism bool:
-            If True keeps the best individual of the last generation intact.
         do_crossover bool:
             Whether or not to perform crossover.
         """
@@ -50,23 +47,15 @@ class GA:
         self.r = resolution
         self.linmap = np.array(ranges)
         self.n_param = len(self.linmap)
-        self.elitism = elitism + 0
         self.total_bits = self.n_param*self.r
         self.do_crossover = do_crossover
         self.rng = np.random.default_rng(rng_seed)
         self.G = self.rng.integers(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
-        self.elite_index = 0
         
     def mutation(self):
-        i = self.elitism
         mutation_distribution = [self.mp, 1-self.mp]
         mask = self.rng.choice([1,0], size=self.G.shape, p=mutation_distribution)#Ones change the bit and zero does not
         mutated = self.G^mask
-        
-        if self.elitism:
-            i = self.p.argmax()
-            elite = self.G[i].copy()
-            mutated[self.p.argmin()] = elite
         
         self.G = mutated.copy()
         
@@ -132,12 +121,7 @@ class GA:
         """
         children = np.concatenate([self.G[pairs][:,::-1,:cut],self.G[pairs][:,:,cut:]],axis=2)
         children = children.reshape((2*cross_size,self.total_bits))
-        children = children[:self.pop_size,:] 
-        
-        if self.elitism:
-            i = self.p.argmax()
-            elite = self.G[i].copy()
-            children[self.p.argmin()] = elite
+        children = children[:self.pop_size,:]
             
         self.G = children    
     
