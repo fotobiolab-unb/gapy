@@ -54,7 +54,7 @@ class GA:
         self.total_bits = self.n_param*self.r
         self.do_crossover = do_crossover
         self.rng = np.random.default_rng(rng_seed)
-        self.G = self.rng.randint(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
+        self.G = self.rng.integers(0,2,size=(self.pop_size,self.total_bits)) #Genetic Algorithm state. Lines are individuals.
         self.elite_index = 0
         
     def mutation(self):
