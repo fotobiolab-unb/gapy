@@ -63,9 +63,9 @@ class GA:
         mutated = self.G^mask
         
         if self.elitism:
-            i = self.fitness.argmax()
+            i = self.p.argmax()
             elite = self.G[i].copy()
-            mutated[i] = elite
+            mutated[self.p.argmin()] = elite
         
         self.G = mutated
         
@@ -131,13 +131,14 @@ class GA:
         """
         children = np.concatenate([self.G[pairs][:,::-1,:cut],self.G[pairs][:,:,cut:]],axis=2)
         children = children.reshape((2*cross_size,self.total_bits))
+        children = children[:self.pop_size,:] 
         
         if self.elitism:
-            i = self.fitness.argmax()
+            i = self.p.argmax()
             elite = self.G[i].copy()
-            children[i] = elite
+            children[self.p.argmin()] = elite
             
-        self.G = children[:self.pop_size,:]    
+        self.G = children    
     
     def run(self):
         for i in range(self.generations):
@@ -145,7 +146,7 @@ class GA:
             self.crossover()
             self.mutation()
         self.ask_oracle()
-        i = self.fitness.argmax()
+        i = self.p.argmax()
         self.fittest = np.array([self.G[i]])
         x = self.view(self.fittest, self.linmap)
         return self.G, x
